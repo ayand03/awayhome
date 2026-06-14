@@ -11,14 +11,19 @@
 <body>
 
     <!-- Navigation Bar -->
-    <header>
-        <div class="logo">Away<span>Home</span></div>
-        <nav>
-            <a href="#discover" class="active">Find a Stay</a>
-            <a href="#list-property">List Your Property</a>
-        </nav>
-        <button class="btn-primary" onclick="toggleForm('listModal')">Host Dashboard</button>
-    </header>
+<header>
+    <div class="logo">Away<span>Home</span></div>
+    <nav>
+        <a href="#discover" class="active">Find a Stay</a>
+        <a href="#list-property">List Your Property</a>
+    </nav>
+    <div class="auth-controls">
+        <!-- This will dynamically change via JS based on login status -->
+        <span id="userGreeting" style="margin-right: 15px; color: #94a3b8; display: none;"></span>
+        <button id="authBtn" class="btn-primary" onclick="openAuthModal()">Login / Sign Up</button>
+        <button id="hostDashBtn" class="btn-secondary" onclick="toggleForm('listModal')" style="display: none; margin-left: 10px; padding: 10px 15px;">Host Dashboard</button>
+    </div>
+</header>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -108,6 +113,43 @@
         <p>&copy; 2026 AwayHome Tripura. Connecting Hosts and Stayers seamlessly.</p>
     </footer>
 
+
+    <!-- Authentication Modal (Login / Signup) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+            <h3 id="authModalTitle">Login to AwayHome</h3>
+            
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <label>Email Address</label>
+                <input type="email" id="authEmail" placeholder="name@example.com" required>
+
+                <label>Password</label>
+                <input type="password" id="authPassword" placeholder="••••••••" required>
+
+                <button type="submit" id="authSubmitBtn" class="btn-primary" style="width: 100%; margin-top: 20px;">Sign In</button>
+            
+                <div class="divider">or</div>
+
+                <button id="google-signin-btn" type="button" style="width: 100%; height: 40px; background-color: #ffffff; color: #1e293b; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 500; cursor: pointer;">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style="width: 18px; height: 18px; margin-right: 10px; display: block;">
+                    Sign in with Google
+                  </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #94a3b8;">
+                <span id="authToggleText">Don't have an account?</span> 
+                <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)" style="color: #06b6d4; text-decoration: none; font-weight: 600;">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Firebase App and Auth SDKs (v9 Compatible Compatibility Scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <!-- Your existing local script mapping -->
     <script src="script.js"></script>
 </body>
+
 </html>
