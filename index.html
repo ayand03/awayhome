@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AwayHome | Your home away from home in Tripura</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <div class="logo">Away<span>Home</span></div>
+        <nav>
+            <a href="#discover" class="active">Find a Stay</a>
+            <a href="#list-property">List Your Property</a>
+        </nav>
+        <button class="btn-primary" onclick="toggleForm('listModal')">Host Dashboard</button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your home away<span> from home in Tripura.</span></h1>
+            <p class="sub-text">Explore verified PGs near NIT & Tripura University, premium rental flats, and beautiful homestays across the state.</p>
+            
+            <!-- Search & Filter Bar -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <select id="locationFilter">
+                        <option value="all">All Tripura</option>
+                        <option value="agartala">Agartala</option>
+                        <option value="amtali">Amtali (Near NIT)</option>
+                        <option value="jampui">Jampui Hills</option>
+                        <option value="dharmanagar">Dharmanagar</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <i class="fa-solid fa-house"></i>
+                    <select id="typeFilter">
+                        <option value="all">All Types</option>
+                        <option value="rent">Rental House</option>
+                        <option value="pg">PG / Hostel</option>
+                        <option value="homestay">Homestay</option>
+                    </select>
+                </div>
+                <button class="btn-search" onclick="filterListings()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content: Listings Section -->
+    <main id="discover" class="container">
+        <h2 class="section-title">Featured Accommodations</h2>
+        <div class="listings-grid" id="listingsGrid">
+            <!-- JavaScript will inject cards here dynamically -->
+        </div>
+    </main>
+
+    <!-- Landlord Section / Call to Action -->
+    <section id="list-property" class="cta-section">
+        <div class="cta-content">
+            <h2>Earn Extra Income. List Your Property on AwayHome!</h2>
+            <p>Have an empty room, flat, or a beautiful tourist spot home? Reach thousands of students, families, and travelers instantly.</p>
+            <button class="btn-secondary" onclick="toggleForm('listModal')">Create a Listing <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Modal Form for Host Posting -->
+    <div id="listModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleForm('listModal')">&times;</span>
+            <h3>Post Your Property on AwayHome</h3>
+            <form id="propertyForm" onsubmit="addNewProperty(event)">
+                <label>Property Title</label>
+                <input type="text" id="pTitle" placeholder="e.g., Single Room PG for Girls near NIT" required>
+
+                <label>Location / City</label>
+                <select id="pLocation" required>
+                    <option value="agartala">Agartala</option>
+                    <option value="amtali">Amtali (Near NIT)</option>
+                    <option value="jampui">Jampui Hills</option>
+                    <option value="dharmanagar">Dharmanagar</option>
+                </select>
+
+                <label>Category</label>
+                <select id="pType" required>
+                    <option value="rent">Rental House</option>
+                    <option value="pg">PG / Hostel</option>
+                    <option value="homestay">Homestay</option>
+                </select>
+
+                <label>Monthly Rent / Price (INR)</label>
+                <input type="number" id="pPrice" placeholder="e.g., 4500" required>
+
+                <label>Image URL</label>
+                <input type="url" id="pImg" placeholder="https://images.unsplash.com/..." required>
+
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 15px;">Submit Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 AwayHome Tripura. Connecting Hosts and Stayers seamlessly.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
