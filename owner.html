@@ -141,28 +141,45 @@ const storage = firebase.app().storage();
                 return;
             }
 
+            
             try {
-                alert("Uploading media references onto AwayHome Cloud database infrastructure... Please wait.");
+                alert("Starting image upload pipeline... Please wait.");
                 const imageUrls = [];
 
-                // Staging file elements onto Storage pipeline
-                // Staging file elements onto Storage pipeline
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            
-            // FIX: Use .ref().child() instead of .ref() directly
-            const storageRef = storage.ref().child(`listings/${Date.now()}_${file.name}`);
-            
-            try {
-                const snapshot = await storageRef.put(file);
-                const downloadUrl = await snapshot.ref.getDownloadURL();
-                imageUrls.push(downloadUrl);
-            } catch (storageErr) {
-                console.error("Storage upload failed on file:", file.name, storageErr);
-                alert(`Failed uploading image (${file.name}): ${storageErr.message}`);
-                return; // Stop execution if an image upload breaks
-            }
-        }
+                // Helper function to convert raw file to a Base64 string
+                const convertFileToBase64 = (file) => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = (error) => reject(error);
+                    });
+                };
+
+                // Staging file elements onto Storage pipeline via strings
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    console.log(`Converting and uploading file ${i + 1}: ${file.name}`);
+                    
+                    // 1. Convert to Base64
+                    const base64String = await convertFileToBase64(file);
+                    
+                    // 2. Set Firebase child directory path 
+                    const storageRef = storage.ref().child(`listings/${Date.now()}_${file.name}`);
+                    
+                    try {
+                        // 3. Upload string package to bypass multi-region bucket CORS/Realtime errors
+                        const snapshot = await storageRef.putString(base64String, 'data_url');
+                        const downloadUrl = await snapshot.ref.getDownloadURL();
+                        imageUrls.push(downloadUrl);
+                    } catch (storageErr) {
+                        console.error("Storage upload failed on file:", file.name, storageErr);
+                        alert(`Firebase Storage Failed on file (${file.name}):\n${storageErr.message}`);
+                        return; 
+                    }
+                }
+
+                alert("Images uploaded successfully! Saving your property text data...");
 
                 // Creating records data document in Cloud Firestore
                 await db.collection("listings").add({
