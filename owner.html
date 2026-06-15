@@ -10,9 +10,20 @@
     .form-container { max-width: 600px; margin: 0 auto; background: #161b22; padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; margin-bottom: 8px; color: #c9d1d9; font-weight: 500; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #fff; }
-    .btn-submit { width: 100%; padding: 12px; background: #238636; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-    .back-link { display: inline-block; margin-bottom: 20px; color: #58a6ff; text-decoration: none; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #fff; font-size: 0.95rem; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #58a6ff; outline: none; }
+    .btn-submit { width: 100%; padding: 12px; background: #238636; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+    .btn-submit:hover { background: #2ea043; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #58a6ff; text-decoration: none; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+    
+    /* Image Upload Styles */
+    .file-drop-area { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; padding: 25px; border: 2px dashed #30363d; border-radius: 6px; background-color: #0d1117; text-align: center; transition: border-color 0.2s ease; cursor: pointer; }
+    .file-drop-area:hover { border-color: #58a6ff; }
+    .file-drop-area input[type="file"] { position: absolute; left: 0; top: 0; height: 100%; width: 100%; opacity: 0; cursor: pointer; }
+    .file-msg { color: #8b949e; font-size: 0.9rem; margin: 0; }
+    .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 100px)); gap: 10px; margin-top: 15px; }
+    .preview-img { width: 100%; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid #30363d; }
   </style>
 </head>
 <body>
@@ -24,28 +35,32 @@
     
     <form id="propertyForm">
       <div class="form-group">
-        <label>Property Title / Name</label>
-        <input type="text" placeholder="e.g., Luxury Stay near NIT Agartala" required>
+        <label for="propertyTitle">Property Title / Name</label>
+        <input type="text" id="propertyTitle" placeholder="e.g., Luxury Stay near NIT Agartala" required>
       </div>
+      
       <div class="form-group">
-        <label>Property Type</label>
-        <select required>
+        <label for="propertyType">Property Type</label>
+        <select id="propertyType" required>
           <option value="pg">Paying Guest (PG)</option>
           <option value="flat">Rental Flat</option>
           <option value="room">Single Room</option>
         </select>
       </div>
+      
       <div class="form-group">
-        <label>Location / Area</label>
-        <input type="text" placeholder="e.g., Jirania, West Tripura" required>
+        <label for="propertyLocation">Location / Area</label>
+        <input type="text" id="propertyLocation" placeholder="e.g., Jirania, West Tripura" required>
       </div>
+      
       <div class="form-group">
-        <label>Monthly Rent (INR)</label>
-        <input type="number" placeholder="e.g., 4500" required>
+        <label for="propertyRent">Monthly Rent (INR)</label>
+        <input type="number" id="propertyRent" placeholder="e.g., 4500" required>
       </div>
+      
       <div class="form-group">
-        <label>Description & Amenities</label>
-        <textarea rows="4" placeholder="Mention Wi-Fi, Food, Bedding configurations..."></textarea>
+        <label for="propertyDescription">Description & Amenities</label>
+        <textarea id="propertyDescription" rows="4" placeholder="Mention Wi-Fi, Food, Bedding configurations..."></textarea>
       </div>
 
       <div class="form-group">
@@ -56,10 +71,123 @@
         </div>
         <div id="imagePreviewContainer" class="preview-grid"></div>
       </div>
-
+      
       <button type="submit" class="btn-submit">Submit Listing</button>
     </form>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
+  <script>
+    // Injected directly from your existing project deployment configurations
+    const firebaseConfig = {
+        apiKey: "AIzaSyCsj47Iv-aCx0_K3j46DAibPrWJ0kWEgls",
+        authDomain: "awayhome-tripura.firebaseapp.com",
+        projectId: "awayhome-tripura",
+        storageBucket: "awayhome-tripura.appspot.com",
+        messagingSenderId: "464280299594",
+        appId: "1:464280299594:web:754ec02a9d5d2d9d98deb3"
+    };
+    
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    
+    const db = firebase.firestore();
+const storage = firebase.app().storage();
+  </script>
+
+  <script>
+    const imageInput = document.getElementById('propertyImages');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+
+    // UI Photo Staging Previews
+    if (imageInput) {
+        imageInput.addEventListener('change', function() {
+            if (previewContainer) previewContainer.innerHTML = '';
+            
+            Array.from(this.files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.classList.add('preview-img');
+                        if (previewContainer) previewContainer.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    }
+
+    // Capture fields payload and submit to Google Cloud Services
+    const propertyForm = document.getElementById("propertyForm");
+    if (propertyForm) {
+        propertyForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById("propertyTitle").value;
+            const type = document.getElementById("propertyType").value;
+            const location = document.getElementById("propertyLocation").value;
+            const rent = document.getElementById("propertyRent").value;
+            const description = document.getElementById("propertyDescription").value;
+            const files = document.getElementById("propertyImages").files;
+            
+            if (files.length === 0) {
+                alert("Please select at least one visual photo of your property.");
+                return;
+            }
+
+            try {
+                alert("Uploading media references onto AwayHome Cloud database infrastructure... Please wait.");
+                const imageUrls = [];
+
+                // Staging file elements onto Storage pipeline
+                // Staging file elements onto Storage pipeline
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            
+            // FIX: Use .ref().child() instead of .ref() directly
+            const storageRef = storage.ref().child(`listings/${Date.now()}_${file.name}`);
+            
+            try {
+                const snapshot = await storageRef.put(file);
+                const downloadUrl = await snapshot.ref.getDownloadURL();
+                imageUrls.push(downloadUrl);
+            } catch (storageErr) {
+                console.error("Storage upload failed on file:", file.name, storageErr);
+                alert(`Failed uploading image (${file.name}): ${storageErr.message}`);
+                return; // Stop execution if an image upload breaks
+            }
+        }
+
+                // Creating records data document in Cloud Firestore
+                await db.collection("listings").add({
+                    title: title,
+                    type: type,
+                    location: location,
+                    rent: Number(rent),
+                    description: description,
+                    images: imageUrls,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("Success! Your property listing is officially live.");
+                propertyForm.reset();
+                if (previewContainer) previewContainer.innerHTML = '';
+                
+                // Return to user portal interface context layout dynamically
+                window.location.href = "customer.html";
+
+            } catch (error) {
+                console.error("Submission Engine Error Details:", error);
+                alert("Database Error: " + error.message);
+            }
+        });
+    }
+  </script>
 </body>
 </html>
