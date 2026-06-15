@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AwayHome | Your home away from home in Tripura</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <div class="logo">Away<span>Home</span></div>
+    
+        <nav class="nav-links">
+          <a href="#discover" class="active">Explore</a>
+          <a href="#list-property">Host</a>
+        </nav>
+    
+        <div class="auth-controls">
+          <span id="userGreeting" style="color: #94a3b8; display: none;"></span>
+          <div class="button-group">
+            <button id="hostDashBtn" class="btn-secondary" onclick="toggleForm('listModal')" style="display: none;">Dashboard</button>
+            <button id="authBtn" class="btn-primary" onclick="openAuthModal()">Login / Sign Up</button>
+          </div>
+        </div>
+      </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your home away<span> from home in Tripura.</span></h1>
+            <p class="sub-text">Explore verified PGs near NIT & Tripura University, premium rental flats, and beautiful homestays across the state.</p>
+            
+            <!-- Search & Filter Bar -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <select id="locationFilter">
+                        <option value="all">All Tripura</option>
+                        <option value="agartala">Agartala</option>
+                        <option value="amtali">Amtali (Near NIT)</option>
+                        <option value="jampui">Jampui Hills</option>
+                        <option value="dharmanagar">Dharmanagar</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <i class="fa-solid fa-house"></i>
+                    <select id="typeFilter">
+                        <option value="all">All Types</option>
+                        <option value="rent">Rental House</option>
+                        <option value="pg">PG / Hostel</option>
+                        <option value="homestay">Homestay</option>
+                    </select>
+                </div>
+                <button class="btn-search" onclick="filterListings()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content: Listings Section -->
+    <main id="discover" class="container">
+        <h2 class="section-title">Featured Accommodations</h2>
+        <div class="listings-grid" id="listingsGrid">
+            <!-- JavaScript will inject cards here dynamically -->
+        </div>
+    </main>
+
+    <!-- Landlord Section / Call to Action -->
+    <section id="list-property" class="cta-section">
+        <div class="cta-content">
+            <h2>Earn Extra Income. List Your Property on AwayHome!</h2>
+            <p>Have an empty room, flat, or a beautiful tourist spot home? Reach thousands of students, families, and travelers instantly.</p>
+            <a href="owner.html" style="text-decoration: none;">
+                <button class="btn-primary">Create a Listing</button>
+            </a>
+        </div>
+    </section>
+
+    
+
+    <footer>
+        <p>&copy; 2026 AwayHome Tripura. Connecting Hosts and Stayers seamlessly.</p>
+    </footer>
+
+
+    <!-- Authentication Modal (Login / Signup) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+            <h3 id="authModalTitle">Login to AwayHome</h3>
+            
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <label>Email Address</label>
+                <input type="email" id="authEmail" placeholder="name@example.com" required>
+
+                <label>Password</label>
+                <input type="password" id="authPassword" placeholder="••••••••" required>
+
+                <button type="submit" id="authSubmitBtn" class="btn-primary" style="width: 100%; margin-top: 20px;">Sign In</button>
+            
+                <div class="divider">or</div>
+
+                <button id="google-signin-btn" type="button" style="width: 100%; height: 40px; background-color: #ffffff; color: #1e293b; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 500; cursor: pointer;">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style="width: 18px; height: 18px; margin-right: 10px; display: block;">
+                    Sign in with Google
+                  </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #94a3b8;">
+                <span id="authToggleText">Don't have an account?</span> 
+                <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)" style="color: #06b6d4; text-decoration: none; font-weight: 600;">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Firebase App and Auth SDKs (v9 Compatible Compatibility Scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <!-- Your existing local script mapping -->
+    <script src="script.js"></script>
+</body>
+
+</html>

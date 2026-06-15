@@ -1,127 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AwayHome | Your home away from home in Tripura</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to AwayHome</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
+    body {
+        background-color: #0d1117;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .role-card-container {
+        text-align: center;
+        max-width: 800px;
+        width: 100%;
+    }
+    .role-title {
+        color: #ffffff;
+        font-size: 2.5rem;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+    .role-title span {
+        color: #58a6ff;
+    }
+    .role-subtitle {
+        color: #8b949e;
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+    .role-options {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+    }
+    .role-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 30px 24px;
+        flex: 1;
+        max-width: 340px;
+        text-decoration: none;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .role-card:hover {
+        transform: translateY(-5px);
+        border-color: #58a6ff;
+        box-shadow: 0 8px 24px rgba(88, 166, 255, 0.1);
+    }
+    .role-icon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+    }
+    .role-card h3 {
+        color: #ffffff;
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    .role-card p {
+        color: #8b949e;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 24px;
+        text-align: center;
+        flex-grow: 1;
+    }
+    .role-btn {
+        width: 100%;
+        padding: 12px;
+        font-weight: 600;
+        border-radius: 6px;
+        border: none;
+        text-align: center;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+    .btn-primary { background-color: #1f6feb; color: #ffffff; }
+    .btn-secondary { background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+    
+    @media (max-width: 600px) {
+        .role-options { flex-direction: column; align-items: center; }
+        .role-card { width: 100%; }
+        .role-title { font-size: 2rem; }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Navigation Bar -->
-    <header>
-        <div class="logo">Away<span>Home</span></div>
+  <div class="role-card-container">
+    <h1 class="role-title">Welcome to Away<span>Home</span></h1>
+    <p class="role-subtitle"></p>
     
-        <nav class="nav-links">
-          <a href="#discover" class="active">Explore</a>
-          <a href="#list-property">Host</a>
-        </nav>
-    
-        <div class="auth-controls">
-          <span id="userGreeting" style="color: #94a3b8; display: none;"></span>
-          <div class="button-group">
-            <button id="hostDashBtn" class="btn-secondary" onclick="toggleForm('listModal')" style="display: none;">Dashboard</button>
-            <button id="authBtn" class="btn-primary" onclick="openAuthModal()">Login / Sign Up</button>
-          </div>
-        </div>
-      </header>
+    <div class="role-options">
+      <a href="customer.html" class="role-card">
+        <div class="role-icon">🔍</div>
+        <h3>Find a Stay</h3>
+        <p>Explore and book available PGs, flats, or homestays across Tripura.</p>
+        <button class="role-btn btn-primary">Explore Stays</button>
+      </a>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Your home away<span> from home in Tripura.</span></h1>
-            <p class="sub-text">Explore verified PGs near NIT & Tripura University, premium rental flats, and beautiful homestays across the state.</p>
-            
-            <!-- Search & Filter Bar -->
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <select id="locationFilter">
-                        <option value="all">All Tripura</option>
-                        <option value="agartala">Agartala</option>
-                        <option value="amtali">Amtali (Near NIT)</option>
-                        <option value="jampui">Jampui Hills</option>
-                        <option value="dharmanagar">Dharmanagar</option>
-                    </select>
-                </div>
-                <div class="search-box">
-                    <i class="fa-solid fa-house"></i>
-                    <select id="typeFilter">
-                        <option value="all">All Types</option>
-                        <option value="rent">Rental House</option>
-                        <option value="pg">PG / Hostel</option>
-                        <option value="homestay">Homestay</option>
-                    </select>
-                </div>
-                <button class="btn-search" onclick="filterListings()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content: Listings Section -->
-    <main id="discover" class="container">
-        <h2 class="section-title">Featured Accommodations</h2>
-        <div class="listings-grid" id="listingsGrid">
-            <!-- JavaScript will inject cards here dynamically -->
-        </div>
-    </main>
-
-    <!-- Landlord Section / Call to Action -->
-    <section id="list-property" class="cta-section">
-        <div class="cta-content">
-            <h2>Earn Extra Income. List Your Property on AwayHome!</h2>
-            <p>Have an empty room, flat, or a beautiful tourist spot home? Reach thousands of students, families, and travelers instantly.</p>
-            <a href="owner.html" style="text-decoration: none;">
-                <button class="btn-primary">Create a Listing</button>
-            </a>
-        </div>
-    </section>
-
-    
-
-    <footer>
-        <p>&copy; 2026 AwayHome Tripura. Connecting Hosts and Stayers seamlessly.</p>
-    </footer>
-
-
-    <!-- Authentication Modal (Login / Signup) -->
-    <div id="authModal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
-            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
-            <h3 id="authModalTitle">Login to AwayHome</h3>
-            
-            <form id="authForm" onsubmit="handleAuthSubmit(event)">
-                <label>Email Address</label>
-                <input type="email" id="authEmail" placeholder="name@example.com" required>
-
-                <label>Password</label>
-                <input type="password" id="authPassword" placeholder="••••••••" required>
-
-                <button type="submit" id="authSubmitBtn" class="btn-primary" style="width: 100%; margin-top: 20px;">Sign In</button>
-            
-                <div class="divider">or</div>
-
-                <button id="google-signin-btn" type="button" style="width: 100%; height: 40px; background-color: #ffffff; color: #1e293b; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 500; cursor: pointer;">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style="width: 18px; height: 18px; margin-right: 10px; display: block;">
-                    Sign in with Google
-                  </button>
-            </form>
-            
-            <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #94a3b8;">
-                <span id="authToggleText">Don't have an account?</span> 
-                <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)" style="color: #06b6d4; text-decoration: none; font-weight: 600;">Sign Up</a>
-            </p>
-        </div>
+      <a href="owner.html" class="role-card">
+        <div class="role-icon">🏠</div>
+        <h3>Become an Owner</h3>
+        <p>List your property, manage your settings, and launch your dashboard.</p>
+        <button class="role-btn btn-secondary">Host Property</button>
+      </a>
     </div>
+  </div>
 
-    <!-- Firebase App and Auth SDKs (v9 Compatible Compatibility Scripts) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-
-    <!-- Your existing local script mapping -->
-    <script src="script.js"></script>
 </body>
-
 </html>
