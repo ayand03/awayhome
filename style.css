@@ -381,3 +381,51 @@ footer {
   .google-btn:hover {
     background-color: #f1f1f1;
   }
+  /* --- Mobile Responsive Navigation --- */
+@media (max-width: 768px) {
+    /* Assuming your main nav bar has a class or wrap container */
+    nav, .navbar {
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 15px 10px !important;
+        gap: 12px !important;
+        height: auto !important;
+    }
+
+    /* Target the link group (Find a Stay, List your Property) */
+    .nav-links, nav div:has(a) {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 15px !important;
+        margin: 5px 0 !important;
+    }
+
+    /* Target the authentication actions and greeting text */
+    .auth-buttons-container, nav div:has(button) {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    /* Ensure your greeting doesn't push elements out of bounds */
+    #userGreeting {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin-bottom: 4px !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Make buttons clean, legible and tap-friendly on mobile touch */
+    #authBtn, #hostDashBtn {
+        font-size: 0.85rem !important;
+        padding: 8px 12px !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
+}
