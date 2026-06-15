@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Portal - AwayHome</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background-color: #0d1117; color: #ffffff; padding: 40px 20px; }
+    .form-container { max-width: 600px; margin: 0 auto; background: #161b22; padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; color: #c9d1d9; font-weight: 500; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #fff; }
+    .btn-submit { width: 100%; padding: 12px; background: #238636; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #58a6ff; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <a href="welcome.html" class="back-link">← Change Role</a>
+    <h2>List Your Property on AwayHome</h2>
+    <p style="color: #8b949e; margin-bottom: 24px;">Fill out the details below to add your PG, room, or flat.</p>
+    
+    <form id="propertyForm">
+      <div class="form-group">
+        <label>Property Title / Name</label>
+        <input type="text" placeholder="e.g., Luxury Stay near NIT Agartala" required>
+      </div>
+      <div class="form-group">
+        <label>Property Type</label>
+        <select required>
+          <option value="pg">Paying Guest (PG)</option>
+          <option value="flat">Rental Flat</option>
+          <option value="room">Single Room</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Location / Area</label>
+        <input type="text" placeholder="e.g., Jirania, West Tripura" required>
+      </div>
+      <div class="form-group">
+        <label>Monthly Rent (INR)</label>
+        <input type="number" placeholder="e.g., 4500" required>
+      </div>
+      <div class="form-group">
+        <label>Description & Amenities</label>
+        <textarea rows="4" placeholder="Mention Wi-Fi, Food, Bedding configurations..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="propertyImages">Upload Property Images</label>
+        <div class="file-drop-area">
+          <input type="file" id="propertyImages" accept="image/*" multiple required>
+          <p class="file-msg">Click or drag & drop images here (Max 5 photos)</p>
+        </div>
+        <div id="imagePreviewContainer" class="preview-grid"></div>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Listing</button>
+    </form>
+  </div>
+
+</body>
+</html>

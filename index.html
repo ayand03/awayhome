@@ -11,19 +11,22 @@
 <body>
 
     <!-- Navigation Bar -->
-<header>
-    <div class="logo">Away<span>Home</span></div>
-    <nav>
-        <a href="#discover" class="active">Find a Stay</a>
-        <a href="#list-property">List Your Property</a>
-    </nav>
-    <div class="auth-controls">
-        <!-- This will dynamically change via JS based on login status -->
-        <span id="userGreeting" style="margin-right: 15px; color: #94a3b8; display: none;"></span>
-        <button id="authBtn" class="btn-primary" onclick="openAuthModal()">Login / Sign Up</button>
-        <button id="hostDashBtn" class="btn-secondary" onclick="toggleForm('listModal')" style="display: none; margin-left: 10px; padding: 10px 15px;">Host Dashboard</button>
-    </div>
-</header>
+    <header>
+        <div class="logo">Away<span>Home</span></div>
+    
+        <nav class="nav-links">
+          <a href="#discover" class="active">Explore</a>
+          <a href="#list-property">Host</a>
+        </nav>
+    
+        <div class="auth-controls">
+          <span id="userGreeting" style="color: #94a3b8; display: none;"></span>
+          <div class="button-group">
+            <button id="hostDashBtn" class="btn-secondary" onclick="toggleForm('listModal')" style="display: none;">Dashboard</button>
+            <button id="authBtn" class="btn-primary" onclick="openAuthModal()">Login / Sign Up</button>
+          </div>
+        </div>
+      </header>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -70,44 +73,13 @@
         <div class="cta-content">
             <h2>Earn Extra Income. List Your Property on AwayHome!</h2>
             <p>Have an empty room, flat, or a beautiful tourist spot home? Reach thousands of students, families, and travelers instantly.</p>
-            <button class="btn-secondary" onclick="toggleForm('listModal')">Create a Listing <i class="fa-solid fa-arrow-right"></i></button>
+            <a href="owner.html" style="text-decoration: none;">
+                <button class="btn-primary">Create a Listing</button>
+            </a>
         </div>
     </section>
 
-    <!-- Modal Form for Host Posting -->
-    <div id="listModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="toggleForm('listModal')">&times;</span>
-            <h3>Post Your Property on AwayHome</h3>
-            <form id="propertyForm" onsubmit="addNewProperty(event)">
-                <label>Property Title</label>
-                <input type="text" id="pTitle" placeholder="e.g., Single Room PG for Girls near NIT" required>
-
-                <label>Location / City</label>
-                <select id="pLocation" required>
-                    <option value="agartala">Agartala</option>
-                    <option value="amtali">Amtali (Near NIT)</option>
-                    <option value="jampui">Jampui Hills</option>
-                    <option value="dharmanagar">Dharmanagar</option>
-                </select>
-
-                <label>Category</label>
-                <select id="pType" required>
-                    <option value="rent">Rental House</option>
-                    <option value="pg">PG / Hostel</option>
-                    <option value="homestay">Homestay</option>
-                </select>
-
-                <label>Monthly Rent / Price (INR)</label>
-                <input type="number" id="pPrice" placeholder="e.g., 4500" required>
-
-                <label>Image URL</label>
-                <input type="url" id="pImg" placeholder="https://images.unsplash.com/..." required>
-
-                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 15px;">Submit Listing</button>
-            </form>
-        </div>
-    </div>
+    
 
     <footer>
         <p>&copy; 2026 AwayHome Tripura. Connecting Hosts and Stayers seamlessly.</p>

@@ -381,51 +381,231 @@ footer {
   .google-btn:hover {
     background-color: #f1f1f1;
   }
-  /* --- Mobile Responsive Navigation --- */
+ /* --- Optimized Mobile Responsive Navigation --- */
+/* =========================================================================
+   HEADER & NAVIGATION BASE STYLES (Desktop Baseline)
+   ========================================================================= */
+   header {
+    background-color: #0d1117;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    border-bottom: 1px solid #21262d;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.logo span {
+    color: #58a6ff; /* Brand accent blue color */
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #58a6ff;
+}
+
+/* Authentication section wrapper layouts */
+.auth-controls, .button-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+/* =========================================================================
+   PERFECT MOBILE VIEW (Place at the absolute bottom of your style.css)
+   ========================================================================= */
 @media (max-width: 768px) {
-    /* Assuming your main nav bar has a class or wrap container */
-    nav, .navbar {
+    header {
         flex-direction: column !important;
         align-items: center !important;
-        padding: 15px 10px !important;
-        gap: 12px !important;
-        height: auto !important;
+        justify-content: center !important;
+        padding: 20px 15px !important;
+        gap: 16px !important;
+        height: auto !important; /* Expands height container naturally around content */
     }
 
-    /* Target the link group (Find a Stay, List your Property) */
-    .nav-links, nav div:has(a) {
+    .logo {
+        font-size: 1.4rem !important;
+        margin: 0 !important;
+    }
+
+    /* Links row centered cleanly side-by-side */
+    .nav-links {
         display: flex !important;
-        flex-wrap: wrap !important;
+        flex-direction: row !important;
         justify-content: center !important;
-        gap: 15px !important;
+        align-items: center !important;
+        gap: 32px !important; /* Comfortable spacing for thumb-taps */
         margin: 5px 0 !important;
     }
 
-    /* Target the authentication actions and greeting text */
-    .auth-buttons-container, nav div:has(button) {
+    /* Auth container handles vertical stack rules cleanly */
+    .auth-controls {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* Button alignment layout row */
+    .button-group {
         display: flex !important;
         flex-direction: row !important;
-        align-items: center !important;
         justify-content: center !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
+        align-items: center !important;
+        gap: 12px !important;
         width: 100% !important;
     }
 
-    /* Ensure your greeting doesn't push elements out of bounds */
     #userGreeting {
-        display: block !important;
-        width: 100% !important;
+        font-size: 0.9rem !important;
+        margin: 0 !important;
         text-align: center !important;
-        margin-bottom: 4px !important;
-        font-size: 0.95rem !important;
     }
 
-    /* Make buttons clean, legible and tap-friendly on mobile touch */
+    /* Dynamic sizing configuration for buttons on small widths */
     #authBtn, #hostDashBtn {
+        flex: 1 !important;
+        max-width: 150px !important;
+        text-align: center !important;
+        padding: 10px 14px !important;
         font-size: 0.85rem !important;
-        padding: 8px 12px !important;
-        margin: 0 !important;
         white-space: nowrap !important;
+        border-radius: 6px !important;
+        margin: 0 !important; /* Safely overwrites residual desktop offsets */
+    }
+}
+/* =========================================================================
+   ROLE SELECTION SPLASH SCREEN STYLES
+   ========================================================================= */
+   .role-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0d1117;
+    z-index: 9999; /* Stands above everything, including the navbar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.role-card-container {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+}
+
+.role-title {
+    color: #ffffff;
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.role-title span {
+    color: #58a6ff;
+}
+
+.role-subtitle {
+    color: #8b949e;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+.role-options {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+.role-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 30px 24px;
+    flex: 1;
+    max-width: 340px;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.role-card:hover {
+    transform: translateY(-5px);
+    border-color: #58a6ff;
+    box-shadow: 0 8px 24px rgba(88, 166, 255, 0.1);
+}
+
+.role-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.role-card h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+.role-card p {
+    color: #8b949e;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    text-align: center;
+    flex-grow: 1; /* Ensures buttons line up evenly */
+}
+
+.role-btn {
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Responsive optimization for mobile phones */
+@media (max-width: 600px) {
+    .role-options {
+        flex-direction: column;
+        align-items: center;
+    }
+    .role-card {
+        width: 100%;
+    }
+    .role-title {
+        font-size: 2rem;
     }
 }

@@ -255,3 +255,32 @@ function handleLogout() {
 // =========================================================================
 // YOUR EXISTING CODE BELOW (Keep displayListings, filterListings, etc.)
 // =========================================================================
+// --- Role Selection Routing Engine ---
+function selectRole(role) {
+    const splashScreen = document.getElementById("roleSelectionScreen");
+    const hostLink = document.querySelector('a[href="#list-property"]');
+    const hostDashboardButton = document.getElementById("hostDashBtn");
+
+    if (role === 'customer') {
+        console.log("Customer mode activated.");
+        
+        // 1. Strictly hide listing paths so customers cannot access them
+        if (hostLink) hostLink.style.display = "none";
+        if (hostDashboardButton) hostDashboardButton.style.display = "none";
+        
+        // 2. Hide splash screen to let them look around
+        splashScreen.style.display = "none";
+        
+    } else if (role === 'owner') {
+        console.log("Owner mode activated.");
+        
+        // 1. Ensure hosting options are visible 
+        if (hostLink) hostLink.style.display = "inline-block";
+        
+        // 2. Immediately pop open the listing form modal for the owner
+        splashScreen.style.display = "none";
+        
+        // Triggers your existing form modal directly so they can fill out PG/stay details
+        toggleForm('listModal'); 
+    }
+}
