@@ -5,70 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AwayHome | Your home away from home in Tripura</title>
     <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Navigation Bar -->
     <header>
         <div class="logo">Away<span>Home</span></div>
-    
         <nav class="nav-links">
-          <a href="#discover" class="active">Explore</a>
-          <a href="#list-property">Host</a>
+            <a href="#discover" class="active">Explore</a>
+            <a href="#list-property">Host</a>
         </nav>
-    
         <div class="auth-controls">
-          <span id="userGreeting" style="color: #94a3b8; display: none;"></span>
-          <div class="button-group">
-            <button id="hostDashBtn" class="btn-secondary" onclick="toggleForm('listModal')" style="display: none;">Dashboard</button>
-            <button id="authBtn" class="btn-primary" onclick="openAuthModal()">Login / Sign Up</button>
-          </div>
+            <span id="userGreeting" style="color: #94a3b8; display: none;"></span>
+            <div class="button-group">
+                <button id="hostDashBtn" class="btn-secondary" onclick="toggleForm('listModal')" style="display: none;">Dashboard</button>
+                <button id="authBtn" class="btn-primary" onclick="openAuthModal()">Login / Sign Up</button>
+            </div>
         </div>
-      </header>
+    </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Your home away<span> from home in Tripura.</span></h1>
-            <p class="sub-text">Explore verified PGs near NIT & Tripura University, premium rental flats, and beautiful homestays across the state.</p>
+            <h1>Your home away <span>from home in Tripura.</span></h1>
+            <p class="sub-text">Explore verified PGs near NIT & Tripura University, premium rental flats, and beautiful traditional homestays.</p>
             
-            <!-- Search & Filter Bar -->
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <select id="locationFilter">
-                        <option value="all">All Tripura</option>
-                        <option value="agartala">Agartala</option>
-                        <option value="amtali">Amtali (Near NIT)</option>
-                        <option value="jampui">Jampui Hills</option>
-                        <option value="dharmanagar">Dharmanagar</option>
+            <div class="search-container" style="display: flex; flex-wrap: wrap; gap: 15px; background: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; justify-content: center; align-items: center; margin-top: 20px;">
+                
+                <div class="search-box" style="display: flex; align-items: center; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 8px 12px;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #8b949e; margin-right: 8px;"></i>
+                    <input type="text" id="textSearchInput" placeholder="Type city, institution, or nearby area (e.g. NIT)..." style="background: transparent; border: none; color: #fff; outline: none; font-size: 0.95rem; width: 230px;">
+                </div>
+
+                <div class="search-box" style="display: flex; align-items: center; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 8px 12px;">
+                    <i class="fa-solid fa-location-dot" style="color: #8b949e; margin-right: 8px;"></i>
+                    <select id="locationFilter" style="background: transparent; border: none; color: #fff; outline: none; font-size: 0.95rem; cursor: pointer;">
+                        <option value="all">All Districts (Tripura)</option>
+                        <option value="west-tripura">West Tripura (Agartala, Amtali, Jirania)</option>
+                        <option value="sepahijala">Sepahijala (Bishalgarh, Sonamura)</option>
+                        <option value="gomati">Gomati (Udaipur)</option>
+                        <option value="south-tripura">South Tripura (Belonia)</option>
+                        <option value="khowai">Khowai</option>
+                        <option value="dhalai">Dhalai (Ambassa)</option>
+                        <option value="unakoti">Unakoti (Kailashahar)</option>
+                        <option value="north-tripura">North Tripura (Dharmanagar, Jampui Hills)</option>
                     </select>
                 </div>
-                <div class="search-box">
-                    <i class="fa-solid fa-house"></i>
-                    <select id="typeFilter">
+
+                <div class="search-box" style="display: flex; align-items: center; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 8px 12px;">
+                    <i class="fa-solid fa-house" style="color: #8b949e; margin-right: 8px;"></i>
+                    <select id="typeFilter" style="background: transparent; border: none; color: #fff; outline: none; font-size: 0.95rem; cursor: pointer;">
                         <option value="all">All Types</option>
                         <option value="rent">Rental House</option>
                         <option value="pg">PG / Hostel</option>
                         <option value="homestay">Homestay</option>
                     </select>
                 </div>
-                <button class="btn-search" onclick="filterListings()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+
+                <button class="btn-search" onclick="filterListings()" style="background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-filter"></i> Apply Filter
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Main Content: Listings Section -->
     <main id="discover" class="container">
         <h2 class="section-title">Featured Accommodations</h2>
         <div class="listings-grid" id="listingsGrid">
-            <!-- JavaScript will inject cards here dynamically -->
-        </div>
+            </div>
     </main>
 
-    <!-- Landlord Section / Call to Action -->
     <section id="list-property" class="cta-section">
         <div class="cta-content">
             <h2>Earn Extra Income. List Your Property on AwayHome!</h2>
@@ -79,14 +84,17 @@
         </div>
     </section>
 
-    
-
     <footer>
         <p>&copy; 2026 AwayHome Tripura. Connecting Hosts and Stayers seamlessly.</p>
     </footer>
 
+    <div id="detailsModal" class="modal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
+        <div class="modal-content" style="max-width: 600px; width: 90%; background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 25px; color: #fff; position: relative; max-height: 85vh; overflow-y: auto;">
+            <span class="close-btn" onclick="closeDetailsModal()" style="position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #8b949e;">&times;</span>
+            <div id="modalTargetContent"></div>
+        </div>
+    </div>
 
-    <!-- Authentication Modal (Login / Signup) -->
     <div id="authModal" class="modal">
         <div class="modal-content" style="max-width: 400px;">
             <span class="close-btn" onclick="closeAuthModal()">&times;</span>
@@ -95,33 +103,312 @@
             <form id="authForm" onsubmit="handleAuthSubmit(event)">
                 <label>Email Address</label>
                 <input type="email" id="authEmail" placeholder="name@example.com" required>
-
+                
                 <label>Password</label>
                 <input type="password" id="authPassword" placeholder="••••••••" required>
-
+                
                 <button type="submit" id="authSubmitBtn" class="btn-primary" style="width: 100%; margin-top: 20px;">Sign In</button>
-            
                 <div class="divider">or</div>
-
-                <button id="google-signin-btn" type="button" style="width: 100%; height: 40px; background-color: #ffffff; color: #1e293b; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 500; cursor: pointer;">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style="width: 18px; height: 18px; margin-right: 10px; display: block;">
-                    Sign in with Google
-                  </button>
             </form>
-            
+
+            <button id="google-signin-btn" type="button" style="width: 100%; height: 40px; background-color: #fff; border: 1px solid #30363d; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 500;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style="width: 18px; height: 18px;">
+                Sign in with Google
+            </button>
+
             <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #94a3b8;">
-                <span id="authToggleText">Don't have an account?</span> 
-                <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)" style="color: #06b6d4; text-decoration: none; font-weight: 600;">Sign Up</a>
+                <span id="authToggleText">Don't have an account?</span>
+                <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)" style="color: #06b6d4; text-decoration: none;">Sign Up</a>
             </p>
         </div>
     </div>
 
-    <!-- Firebase App and Auth SDKs (v9 Compatible Compatibility Scripts) -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-    <!-- Your existing local script mapping -->
     <script src="script.js"></script>
-</body>
 
+    <script>
+      // FIXED: We DO NOT redefine 'const firebaseConfig' here. 
+      // It is already loaded and declared right above inside your script.js file.
+      
+      // Initialize Firestore reference handle directly using the active connection profile
+      const db = firebase.firestore();
+      const listingsGrid = document.getElementById("listingsGrid"); 
+
+      let globalListingsCache = []; // Holds live database state for local calculation
+
+    // Smart Proximity Dictionary: Maps search keywords to associated areas in Tripura
+    const proximityKeywords = {
+        "nit": ["amtali", "jirania", "west tripura"],
+        "agartala": ["radhanagar", "dhaleswar", "mahanam city", "nalgaria", "west tripura"],
+        "tripura university": ["suryamaninagar", "amtali", "west tripura"],
+        "jampui": ["vanghmun", "north tripura", "hill station"],
+        "nalgaria": ["mahanam", "ranirbazar", "jirania"]
+    };
+
+    function fetchLiveListings() {
+        console.log("Initializing Smart Real-time Sync Pipeline...");
+        
+        if (listingsGrid) {
+            listingsGrid.innerHTML = "<p style='color: #8b949e; text-align: center; width: 100%; padding: 20px;'>Connecting to AwayHome Database...</p>";
+        }
+
+        db.collection("listings").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+            globalListingsCache = []; // Reset local cache array
+            console.log("Database updated! Total items pulled:", snapshot.size);
+            
+            snapshot.forEach((doc) => {
+                globalListingsCache.push({ id: doc.id, ...doc.data() });
+            });
+            
+            // Run the rendering engine automatically to process filters
+            filterListings();
+        }, (error) => {
+            console.error("Firestore loading error:", error);
+        });
+    }
+
+    function filterListings() {
+        const textSearchInput = document.getElementById("textSearchInput");
+        const locationFilter = document.getElementById("locationFilter");
+        const typeFilter = document.getElementById("typeFilter");
+
+        const textSearch = textSearchInput ? textSearchInput.value.toLowerCase().trim() : "";
+        const selectedDistrict = locationFilter ? locationFilter.value : "all";
+        const selectedType = typeFilter ? typeFilter.value : "all";
+
+        if (!listingsGrid) return;
+        listingsGrid.innerHTML = ""; // Clear current grid view
+
+        // Filter database array cache dynamically
+        const filteredResults = globalListingsCache.filter(item => {
+            const itemTitle = (item.title || "").toLowerCase();
+            const itemLocation = (item.location || "").toLowerCase();
+            const itemDescription = (item.description || "").toLowerCase();
+            const itemType = (item.type || "").toLowerCase();
+
+            // 1. Evaluate Property Type Match with Smart Keyword Mapping
+        let matchesType = false;
+        if (selectedType === "all") {
+            matchesType = true;
+        } else {
+            // Check direct exact values or shorthand strings
+            if (itemType === selectedType) {
+                matchesType = true;
+            } 
+            // Smart Mapping for 'Rental House' option (captures 'rent', 'flat', 'house', 'bhk', 'apartment')
+            else if (selectedType === "rent" && (itemType.includes("rent") || itemTitle.toLowerCase().includes("flat") || itemTitle.toLowerCase().includes("house") || itemTitle.toLowerCase().includes("bhk") || itemTitle.toLowerCase().includes("apartment"))) {
+                matchesType = true;
+            } 
+            // Smart Mapping for 'PG / Hostel' option (captures 'pg', 'hostel', 'sharing', 'boys', 'girls')
+            else if (selectedType === "pg" && (itemType.includes("pg") || itemType.includes("hostel") || itemTitle.toLowerCase().includes("pg") || itemTitle.toLowerCase().includes("hostel"))) {
+                matchesType = true;
+            } 
+            // Smart Mapping for 'Homestay' option (captures 'homestay', 'stay', 'cabin', 'eco')
+            else if (selectedType === "homestay" && (itemType.includes("homestay") || itemTitle.toLowerCase().includes("homestay") || itemTitle.toLowerCase().includes("stay"))) {
+                matchesType = true;
+            }
+        }
+
+            // 2. Evaluate District Dropdown Match with Smart Area Mapping
+        let matchesDistrict = false;
+        if (selectedDistrict === "all") {
+            matchesDistrict = true;
+        } else {
+            const normalizedDistrictString = selectedDistrict.replace("-", " "); // e.g., "north-tripura" -> "north tripura"
+            
+            // Direct check: Does the document text explicitly mention the district name?
+            if (itemLocation.includes(normalizedDistrictString) || itemDescription.includes(normalizedDistrictString)) {
+                matchesDistrict = true;
+            } 
+            // Smart sub-location check: If "North Tripura" is selected, automatically capture Jampui properties!
+            else if (selectedDistrict === "north-tripura" && (itemLocation.includes("jampui") || itemTitle.includes("jampui"))) {
+                matchesDistrict = true;
+            }
+            // Smart sub-location check: If "West Tripura" is selected, automatically match Agartala, Amtali, and Jirania options!
+            else if (selectedDistrict === "west-tripura" && (itemLocation.includes("agartala") || itemLocation.includes("amtali") || itemLocation.includes("jirania") || itemLocation.includes("nalgaria"))) {
+                matchesDistrict = true;
+            }
+        }
+
+            // 3. Evaluate Smart Proximity Text Matching Engine
+            let matchesText = false;
+            if (textSearch === "") {
+                matchesText = true;
+            } else {
+                if (itemTitle.includes(textSearch) || itemLocation.includes(textSearch) || itemDescription.includes(textSearch)) {
+                    matchesText = true;
+                } else {
+                    for (const [key, associatedPlaces] of Object.entries(proximityKeywords)) {
+                        if (textSearch.includes(key) || key.includes(textSearch)) {
+                            associatedPlaces.forEach(place => {
+                                if (itemLocation.includes(place) || itemDescription.includes(place)) {
+                                    matchesText = true;
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            return matchesType && matchesDistrict && matchesText;
+        });
+
+        // Render dynamic matches array onto dashboard grid
+        if (filteredResults.length === 0) {
+            listingsGrid.innerHTML = `<p style="color: #8b949e; text-align: center; width:100%; padding: 40px;">No accommodations found matching those filters in this region.</p>`;
+            return;
+        }
+
+        filteredResults.forEach(data => {
+            const title = data.title || "Untitled Property";
+            const location = data.location || "Location not specified";
+            const rent = data.rent || "N/A";
+            const description = data.description || "No description loaded.";
+            const type = data.type ? data.type.toUpperCase() : "ROOM";
+            const imageUrl = (data.images && data.images.length > 0) ? data.images[0] : "https://via.placeholder.com/300x200";
+
+            const cardHTML = `
+                <div class="property-card" style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; margin: 15px; overflow: hidden; width: 300px; display: inline-block; text-align: left; vertical-align: top;">
+                    <div style="position: relative; height: 180px; background: #0d1117;">
+                        <img src="${imageUrl}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/300x200';">
+                        <span style="position: absolute; top: 10px; left: 10px; background: #58a6ff; color: #fff; padding: 3px 6px; font-size: 0.7rem; font-weight: bold; border-radius: 4px;">${type}</span>
+                    </div>
+                    <div style="padding: 15px;">
+                        <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${title}</h3>
+                        <p style="margin: 0 0 10px 0; color: #8b949e; font-size: 0.85rem;"><i class="fa-solid fa-location-dot"></i> ${location}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #30363d; padding-top: 10px;">
+                            <span style="color: #2ea043; font-weight: bold;">₹${rent}/mo</span>
+                            <button onclick="viewDetails('${data.id}')" style="background: #21262d; border: 1px solid #30363d; color: #58a6ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            listingsGrid.innerHTML += cardHTML;
+        });
+    }
+
+    // Connect text input engine to execute automatically as user types live!
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchLiveListings();
+        const textSearchField = document.getElementById("textSearchInput");
+        if (textSearchField) {
+            textSearchField.addEventListener("input", filterListings);
+        }
+    });
+
+    function viewDetails(id) {
+        // Keeps your view detail popup functional
+        if (typeof window.openDetailsModal === "function") {
+            window.openDetailsModal(id);
+        } else {
+            // Fallback back onto standard view mode if needed
+            alert("Property Selected Document ID: " + id);
+        }
+    }
+
+      // Safe DOM listener execution trigger initialization sequence
+      if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", fetchLiveListings);
+      } else {
+          fetchLiveListings();
+      }
+
+      // 1. Fetch exact document matching payload from Cloud Firestore and trigger Modal
+    async function viewDetails(id) {
+        console.log("Fetching detailed profile for document ID:", id);
+        const modal = document.getElementById("detailsModal");
+        const container = document.getElementById("modalTargetContent");
+        
+        if (!modal || !container) return;
+
+        // Show modal framework immediately with a loading state
+        container.innerHTML = "<p style='color: #8b949e; text-align: center; padding: 20px;'>Loading full listing details...</p>";
+        modal.style.display = "flex";
+
+        try {
+            // Target the specific document directly by its unique string ID
+            const doc = await db.collection("listings").doc(id).get();
+            
+            if (!doc.exists) {
+                container.innerHTML = "<p style='color: #f85149;'>Error: Listing no longer exists.</p>";
+                return;
+            }
+
+            const data = doc.data();
+            const title = data.title || "Untitled Property";
+            const location = data.location || "Location not specified";
+            const rent = data.rent || "N/A";
+            const description = data.description || "No descriptions uploaded.";
+            const type = data.type ? data.type.toUpperCase() : "ROOM";
+            const imageUrl = (data.images && data.images.length > 0) ? data.images[0] : "https://via.placeholder.com/300x200";
+
+            // Inject the complete, un-truncated dataset layout structure
+            container.innerHTML = `
+                <div style="text-align: left;">
+                    <span style="background: #58a6ff; color: #fff; padding: 4px 8px; font-size: 0.75rem; font-weight: bold; border-radius: 4px; display: inline-block; margin-bottom: 15px;">${type}</span>
+                    <h2 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff;">${title}</h2>
+                    <p style="color: #2ea043; font-weight: bold; font-size: 1.3rem; margin: 0 0 15px 0;">₹${rent} <span style="font-size: 0.85rem; color: #8b949e; font-weight: normal;">/ month</span></p>
+                    
+                    <div style="width: 100%; height: 280px; border-radius: 8px; overflow: hidden; margin-bottom: 20px; background: #0d1117;">
+                        <img src="${imageUrl}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/300x200';">
+                    </div>
+                    
+                    <h4 style="margin: 0 0 5px 0; color: #8b949e; font-size: 0.9rem;"><i class="fa-solid fa-location-dot"></i> Exact Location</h4>
+                    <p style="color: #c9d1d9; margin: 0 0 20px 0; font-size: 1rem; line-height: 1.4;">${location}</p>
+                    
+                    <h4 style="margin: 0 0 5px 0; color: #8b949e; font-size: 0.9rem;"><i class="fa-solid fa-list-check"></i> Description & Amenities</h4>
+                    <p style="color: #e6edf2; margin: 0; font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; background: #0d1117; padding: 15px; border-radius: 6px; border: 1px solid #21262d;">
+                        ${description}
+                    </p>
+                    
+                    <button onclick="closeDetailsModal()" style="margin-top: 20px; width: 100%; background: #238636; border: none; color: white; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                        Back to Exploration
+                    </button>
+                </div>
+            `;
+
+        } catch (error) {
+            console.error("Error retrieving individual document profiles:", error);
+            container.innerHTML = `<p style='color: #f85149;'>Error loading details: ${error.message}</p>`;
+        }
+    }
+
+    // 2. Close Modal function
+    function closeDetailsModal() {
+        const modal = document.getElementById("detailsModal");
+        if (modal) modal.style.display = "none";
+    }
+
+    // Close window option if clicking onto outer screen background backdrop space area
+    window.onclick = function(event) {
+        const detModal = document.getElementById("detailsModal");
+        const authModal = document.getElementById("authModal");
+        if (event.target == detModal) detModal.style.display = "none";
+        if (event.target == authModal) closeAuthModal();
+
+        // --- AUTH MODAL INTERACTION CONTROLLERS ---
+    
+    function openAuthModal() {
+        console.log("Opening login authentication modal layout...");
+        const modal = document.getElementById("authModal");
+        if (modal) {
+            modal.style.display = "flex";
+        } else {
+            console.error("Error: Could not find HTML block with id='authModal'");
+        }
+    }
+
+    function closeAuthModal() {
+        const modal = document.getElementById("authModal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    }
+    </script>
+</body>
 </html>

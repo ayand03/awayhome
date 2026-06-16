@@ -42,9 +42,9 @@
       <div class="form-group">
         <label for="propertyType">Property Type</label>
         <select id="propertyType" required>
-          <option value="pg">Paying Guest (PG)</option>
-          <option value="flat">Rental Flat</option>
-          <option value="room">Single Room</option>
+            <option value="rent">Rental House / Flat</option>
+            <option value="pg">PG / Hostel</option>
+            <option value="homestay">Homestay</option>
         </select>
       </div>
       
@@ -64,147 +64,80 @@
       </div>
 
       <div class="form-group">
-        <label for="propertyImages">Upload Property Images</label>
-        <div class="file-drop-area">
-          <input type="file" id="propertyImages" accept="image/*" multiple required>
-          <p class="file-msg">Click or drag & drop images here (Max 5 photos)</p>
-        </div>
-        <div id="imagePreviewContainer" class="preview-grid"></div>
+        <label for="propertyImageUrl">Property Image URL</label>
+        <input type="url" id="propertyImageUrl" placeholder="e.g., https://images.unsplash.com/... or postimages link" required>
+        <small style="color: #8b949e; display: block; margin-top: 5px;">
+          Tip: Upload your image to <a href="https://postimages.org/" target="_blank" style="color: #58a6ff;">postimages.org</a> and paste the <b>Direct Link</b> here.
+        </small>
       </div>
       
       <button type="submit" class="btn-submit">Submit Listing</button>
     </form>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-  <script>
-    // Injected directly from your existing project deployment configurations
-    const firebaseConfig = {
-        apiKey: "AIzaSyCsj47Iv-aCx0_K3j46DAibPrWJ0kWEgls",
+    <script>
+      // 1. Firebase Project App configuration environment keys
+      const firebaseConfig = {
+        apiKey: "AIzaSyCsj47Iv-aCx0_K3j46DAIbPrWJOkWEgls",
         authDomain: "awayhome-tripura.firebaseapp.com",
         projectId: "awayhome-tripura",
         storageBucket: "awayhome-tripura.appspot.com",
         messagingSenderId: "464280299594",
         appId: "1:464280299594:web:754ec02a9d5d2d9d98deb3"
-    };
-    
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    
-    const db = firebase.firestore();
-const storage = firebase.app().storage();
-  </script>
+      };
 
-  <script>
-    const imageInput = document.getElementById('propertyImages');
-    const previewContainer = document.getElementById('imagePreviewContainer');
+      // 2. Initialize instance cleanly safely checking scopes
+      if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+      }
+      
+      const db = firebase.firestore();
 
-    // UI Photo Staging Previews
-    if (imageInput) {
-        imageInput.addEventListener('change', function() {
-            if (previewContainer) previewContainer.innerHTML = '';
-            
-            Array.from(this.files).forEach(file => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.classList.add('preview-img');
-                        if (previewContainer) previewContainer.appendChild(img);
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-    }
+      // 3. Form submission click intercept listener
+      const propertyForm = document.getElementById("propertyForm");
+      if (propertyForm) {
+          propertyForm.addEventListener("submit", async (e) => {
+              e.preventDefault();
+              console.log("Submit button clicked! Processing fields payload...");
+              
+              const title = document.getElementById("propertyTitle").value;
+              const type = document.getElementById("propertyType").value;
+              const location = document.getElementById("propertyLocation").value;
+              const rent = document.getElementById("propertyRent").value;
+              const description = document.getElementById("propertyDescription").value;
+              const imageUrl = document.getElementById("propertyImageUrl").value;
 
-    // Capture fields payload and submit to Google Cloud Services
-    const propertyForm = document.getElementById("propertyForm");
-    if (propertyForm) {
-        propertyForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            
-            const title = document.getElementById("propertyTitle").value;
-            const type = document.getElementById("propertyType").value;
-            const location = document.getElementById("propertyLocation").value;
-            const rent = document.getElementById("propertyRent").value;
-            const description = document.getElementById("propertyDescription").value;
-            const files = document.getElementById("propertyImages").files;
-            
-            if (files.length === 0) {
-                alert("Please select at least one visual photo of your property.");
-                return;
-            }
+              try {
+                  alert("Saving your property details directly to Firestore...");
 
-            
-            try {
-                alert("Starting image upload pipeline... Please wait.");
-                const imageUrls = [];
+                  // Write the entry record directly into your listings collection list array map
+                  await db.collection("listings").add({
+                      title: title,
+                      type: type,
+                      location: location,
+                      rent: Number(rent),
+                      description: description,
+                      images: [imageUrl], 
+                      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                  });
 
-                // Helper function to convert raw file to a Base64 string
-                const convertFileToBase64 = (file) => {
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = (error) => reject(error);
-                    });
-                };
+                  console.log("Document successfully written to Cloud Firestore container bucket!");
+                  alert("Success! Your property listing is officially live.");
+                  
+                  propertyForm.reset();
+                  window.location.href = "customer.html";
 
-                // Staging file elements onto Storage pipeline via strings
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    console.log(`Converting and uploading file ${i + 1}: ${file.name}`);
-                    
-                    // 1. Convert to Base64
-                    const base64String = await convertFileToBase64(file);
-                    
-                    // 2. Set Firebase child directory path 
-                    const storageRef = storage.ref().child(`listings/${Date.now()}_${file.name}`);
-                    
-                    try {
-                        // 3. Upload string package to bypass multi-region bucket CORS/Realtime errors
-                        const snapshot = await storageRef.putString(base64String, 'data_url');
-                        const downloadUrl = await snapshot.ref.getDownloadURL();
-                        imageUrls.push(downloadUrl);
-                    } catch (storageErr) {
-                        console.error("Storage upload failed on file:", file.name, storageErr);
-                        alert(`Firebase Storage Failed on file (${file.name}):\n${storageErr.message}`);
-                        return; 
-                    }
-                }
-
-                alert("Images uploaded successfully! Saving your property text data...");
-
-                // Creating records data document in Cloud Firestore
-                await db.collection("listings").add({
-                    title: title,
-                    type: type,
-                    location: location,
-                    rent: Number(rent),
-                    description: description,
-                    images: imageUrls,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                alert("Success! Your property listing is officially live.");
-                propertyForm.reset();
-                if (previewContainer) previewContainer.innerHTML = '';
-                
-                // Return to user portal interface context layout dynamically
-                window.location.href = "customer.html";
-
-            } catch (error) {
-                console.error("Submission Engine Error Details:", error);
-                alert("Database Error: " + error.message);
-            }
-        });
-    }
-  </script>
+              } catch (error) {
+                  console.error("Firestore writing database failure:", error);
+                  alert("Firestore Error: " + error.message);
+              }
+          });
+      } else {
+          console.error("Error: Could not find HTML form component with id='propertyForm'");
+      }
+    </script>
 </body>
 </html>
