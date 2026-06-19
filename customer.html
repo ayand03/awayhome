@@ -317,65 +317,93 @@
       }
 
       // 1. Fetch exact document matching payload from Cloud Firestore and trigger Modal
-    async function viewDetails(id) {
-        console.log("Fetching detailed profile for document ID:", id);
-        const modal = document.getElementById("detailsModal");
-        const container = document.getElementById("modalTargetContent");
+    // 1. Fetch exact document matching payload from Cloud Firestore and trigger Modal
+async function viewDetails(id) {
+    console.log("Fetching detailed profile for document ID:", id);
+    const modal = document.getElementById("detailsModal");
+    const container = document.getElementById("modalTargetContent");
+    
+    if (!modal || !container) return;
+
+    // Show modal framework immediately with a loading state
+    container.innerHTML = "<p style='color: #8b949e; text-align: center; padding: 20px;'>Loading full listing details...</p>";
+    modal.style.display = "flex";
+
+    try {
+        // Target the specific document directly by its unique string ID
+        const doc = await db.collection("listings").doc(id).get();
         
-        if (!modal || !container) return;
-
-        // Show modal framework immediately with a loading state
-        container.innerHTML = "<p style='color: #8b949e; text-align: center; padding: 20px;'>Loading full listing details...</p>";
-        modal.style.display = "flex";
-
-        try {
-            // Target the specific document directly by its unique string ID
-            const doc = await db.collection("listings").doc(id).get();
-            
-            if (!doc.exists) {
-                container.innerHTML = "<p style='color: #f85149;'>Error: Listing no longer exists.</p>";
-                return;
-            }
-
-            const data = doc.data();
-            const title = data.title || "Untitled Property";
-            const location = data.location || "Location not specified";
-            const rent = data.rent || "N/A";
-            const description = data.description || "No descriptions uploaded.";
-            const type = data.type ? data.type.toUpperCase() : "ROOM";
-            const imageUrl = (data.images && data.images.length > 0) ? data.images[0] : "https://via.placeholder.com/300x200";
-
-            // Inject the complete, un-truncated dataset layout structure
-            container.innerHTML = `
-                <div style="text-align: left;">
-                    <span style="background: #58a6ff; color: #fff; padding: 4px 8px; font-size: 0.75rem; font-weight: bold; border-radius: 4px; display: inline-block; margin-bottom: 15px;">${type}</span>
-                    <h2 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff;">${title}</h2>
-                    <p style="color: #2ea043; font-weight: bold; font-size: 1.3rem; margin: 0 0 15px 0;">₹${rent} <span style="font-size: 0.85rem; color: #8b949e; font-weight: normal;">/ month</span></p>
-                    
-                    <div style="width: 100%; height: 280px; border-radius: 8px; overflow: hidden; margin-bottom: 20px; background: #0d1117;">
-                        <img src="${imageUrl}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/300x200';">
-                    </div>
-                    
-                    <h4 style="margin: 0 0 5px 0; color: #8b949e; font-size: 0.9rem;"><i class="fa-solid fa-location-dot"></i> Exact Location</h4>
-                    <p style="color: #c9d1d9; margin: 0 0 20px 0; font-size: 1rem; line-height: 1.4;">${location}</p>
-                    
-                    <h4 style="margin: 0 0 5px 0; color: #8b949e; font-size: 0.9rem;"><i class="fa-solid fa-list-check"></i> Description & Amenities</h4>
-                    <p style="color: #e6edf2; margin: 0; font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; background: #0d1117; padding: 15px; border-radius: 6px; border: 1px solid #21262d;">
-                        ${description}
-                    </p>
-                    
-                    <button onclick="closeDetailsModal()" style="margin-top: 20px; width: 100%; background: #238636; border: none; color: white; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">
-                        Back to Exploration
-                    </button>
-                </div>
-            `;
-
-        } catch (error) {
-            console.error("Error retrieving individual document profiles:", error);
-            container.innerHTML = `<p style='color: #f85149;'>Error loading details: ${error.message}</p>`;
+        if (!doc.exists) {
+            container.innerHTML = "<p style='color: #f85149;'>Error: Listing no longer exists.</p>";
+            return;
         }
-    }
 
+        const data = doc.data();
+        const title = data.title || "Untitled Property";
+        const location = data.location || "Location not specified";
+        const rent = data.rent || "N/A";
+        const description = data.description || "No descriptions uploaded.";
+        const type = data.type ? data.type.toUpperCase() : "ROOM";
+        const imageUrl = (data.images && data.images.length > 0) ? data.images[0] : "https://via.placeholder.com/300x200";
+
+        // EXTRACT NEW OPTIONAL FIELDS Safely
+        const phone = data.phone || "";
+        const whatsapp = data.whatsapp || "";
+        const mapUrl = data.mapUrl || "";
+
+        // Generate contact action buttons conditionally based on presence
+        let contactButtonsHTML = "";
+        if (phone) {
+            contactButtonsHTML += `<a href="tel:${phone}" style="flex: 1; text-align: center; background: #21262d; border: 1px solid #30363d; color: #58a6ff; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem;"><i class="fa-solid fa-phone"></i> Call Host</a>`;
+        }
+        if (whatsapp) {
+            contactButtonsHTML += `<a href="${whatsapp}" target="_blank" style="flex: 1; text-align: center; background: #238636; color: white; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`;
+        }
+
+        let mapEmbedHTML = "";
+        if (mapUrl) {
+            mapEmbedHTML += `
+                <h4 style="margin: 15px 0 5px 0; color: #8b949e; font-size: 0.9rem;"><i class="fa-solid fa-map-location-dot"></i> Navigation Profile</h4>
+                <a href="${mapUrl}" target="_blank" style="display: block; background: #0d1117; color: #58a6ff; text-decoration: none; padding: 12px; border-radius: 6px; border: 1px solid #21262d; font-size: 0.9rem; margin-bottom: 15px; text-align: center;">
+                    <i class="fa-solid fa-arrow-turn-up"></i> Open Location in Google Maps
+                </a>
+            `;
+        }
+
+        // Inject into the final container.innerHTML template string layout
+        container.innerHTML = `
+            <div style="text-align: left;">
+                <span style="background: #58a6ff; color: #fff; padding: 4px 8px; font-size: 0.75rem; font-weight: bold; border-radius: 4px; display: inline-block; margin-bottom: 15px;">${type}</span>
+                <h2 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff;">${title}</h2>
+                <p style="color: #2ea043; font-weight: bold; font-size: 1.3rem; margin: 0 0 15px 0;">₹${rent} <span style="font-size: 0.85rem; color: #8b949e; font-weight: normal;">/ month</span></p>
+                
+                <div style="width: 100%; height: 250px; border-radius: 8px; overflow: hidden; margin-bottom: 20px; background: #0d1117;">
+                    <img src="${imageUrl}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/300x200';">
+                </div>
+                
+                ${contactButtonsHTML ? `<div style="display: flex; gap: 10px; margin-bottom: 20px;">${contactButtonsHTML}</div>` : ''}
+
+                <h4 style="margin: 0 0 5px 0; color: #8b949e; font-size: 0.9rem;"><i class="fa-solid fa-location-dot"></i> Exact Location</h4>
+                <p style="color: #c9d1d9; margin: 0 0 15px 0; font-size: 1rem; line-height: 1.4;">${location}</p>
+                
+                ${mapEmbedHTML}
+                
+                <h4 style="margin: 0 0 5px 0; color: #8b949e; font-size: 0.9rem;"><i class="fa-solid fa-list-check"></i> Description & Amenities</h4>
+                <p style="color: #e6edf2; margin: 0; font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; background: #0d1117; padding: 15px; border-radius: 6px; border: 1px solid #21262d;">
+                    ${description}
+                </p>
+                
+                <button onclick="closeDetailsModal()" style="margin-top: 20px; width: 100%; background: #21262d; border: 1px solid #30363d; color: white; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    Back to Exploration
+                </button>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Error retrieving individual document profiles:", error);
+        container.innerHTML = `<p style='color: #f85149;'>Error loading details: ${error.message}</p>`;
+    }
+}
     // 2. Close Modal function
     function closeDetailsModal() {
         const modal = document.getElementById("detailsModal");
